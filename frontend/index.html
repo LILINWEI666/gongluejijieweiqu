@@ -1,0 +1,145 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>江浙沪旅行情报站</title>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <main class="app">
+      <section class="hero">
+        <img src="./assets/jzh-hero.png" alt="江浙沪水乡、湖景与城市天际线" />
+        <div class="heroShade"></div>
+        <div class="heroTop">
+          <div>
+            <p class="eyebrow">Jiangsu · Zhejiang · Shanghai</p>
+            <h1>江浙沪旅行情报站</h1>
+          </div>
+          <div class="liveBadge" aria-live="polite">
+            <span class="pulse"></span>
+            <span id="syncTime">同步中</span>
+          </div>
+        </div>
+        <div class="heroStats" aria-label="实时汇总状态">
+          <div>
+            <span id="statNotes">0</span>
+            <small>攻略线索</small>
+          </div>
+          <div>
+            <span id="statSpots">0</span>
+            <small>机位点位</small>
+          </div>
+          <div>
+            <span id="statQueues">0</span>
+            <small>餐厅排号</small>
+          </div>
+          <button id="refreshBtn" class="iconButton" type="button" title="立即拉取更新" aria-label="立即拉取更新">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21 12a9 9 0 1 1-2.64-6.36M21 3v6h-6"/></svg>
+          </button>
+        </div>
+      </section>
+
+      <section class="toolbar" aria-label="筛选条件">
+        <div class="segmented" id="cityFilters"></div>
+        <div class="areaSelectors" aria-label="行政区划筛选">
+          <select id="provinceSelect" aria-label="选择省级区域"></select>
+          <select id="citySelect" aria-label="选择城市"></select>
+          <select id="districtSelect" aria-label="选择区县"></select>
+          <select id="streetSelect" aria-label="选择街道或镇"></select>
+        </div>
+        <label class="searchBox">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m21 21-4.3-4.3M10.5 18a7.5 7.5 0 1 1 0-15 7.5 7.5 0 0 1 0 15Z"/></svg>
+          <input id="searchInput" type="search" placeholder="搜索城市、景点、机位、餐厅" />
+        </label>
+        <button id="toggleQueue" class="switchButton active" type="button">
+          <span></span>
+          显示排号
+        </button>
+      </section>
+
+      <section class="liveStream" aria-label="实时更新流">
+        <div>
+          <p class="eyebrow">Live ingest</p>
+          <h2>攻略、机位、附近餐厅实时更新</h2>
+        </div>
+        <div class="liveRail" id="liveRail" aria-live="polite"></div>
+      </section>
+
+      <section class="dashboard">
+        <aside class="panel feedPanel" aria-label="平台攻略汇总">
+          <div class="panelHeader">
+            <div>
+              <p class="eyebrow">平台汇总</p>
+              <h2>攻略热榜</h2>
+            </div>
+            <span class="countPill" id="feedCount">0 条</span>
+          </div>
+          <div id="feedList" class="feedList"></div>
+        </aside>
+
+        <section class="mapPanel" aria-label="地点与机位地图">
+          <div class="panelHeader">
+            <div>
+              <p class="eyebrow">地点接入</p>
+              <h2>打卡机位地图</h2>
+            </div>
+            <div class="mapLegend">
+              <span><i class="spot"></i>机位</span>
+              <span><i class="food"></i>餐厅</span>
+            </div>
+          </div>
+          <div class="mapCanvas" id="mapCanvas">
+            <div class="mapGrid"></div>
+            <div class="routeLine routeOne"></div>
+            <div class="routeLine routeTwo"></div>
+          </div>
+          <div class="spotDrawer" id="spotDrawer"></div>
+        </section>
+
+        <aside class="panel restaurantPanel" aria-label="附近餐厅排号">
+          <div class="panelHeader">
+            <div>
+              <p class="eyebrow">餐厅动态</p>
+              <h2>排号进度</h2>
+            </div>
+            <span class="countPill danger" id="alertCount">0 个拥挤</span>
+          </div>
+          <div id="restaurantList" class="restaurantList"></div>
+        </aside>
+      </section>
+
+      <div class="modalLayer" id="detailModal" hidden>
+        <article class="detailModal" role="dialog" aria-modal="true" aria-labelledby="detailTitle">
+          <button id="closeModal" class="iconButton dark" type="button" title="关闭" aria-label="关闭">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg>
+          </button>
+          <div id="detailContent"></div>
+        </article>
+      </div>
+
+      <section class="integration">
+        <div>
+          <p class="eyebrow">可接真实接口</p>
+          <h2>数据接入层</h2>
+        </div>
+        <div class="integrationGrid">
+          <article>
+            <h3>内容平台</h3>
+            <p>小红书、抖音、携程、马蜂窝等攻略源通过授权 API、RSS 或合规采集服务进入统一队列。</p>
+          </article>
+          <article>
+            <h3>地点与机位</h3>
+            <p>高德/百度/腾讯地图 POI、坐标、步行距离和照片机位绑定到每条攻略线索。</p>
+          </article>
+          <article>
+            <h3>餐厅排号</h3>
+            <p>美团、大众点评、餐饮 SaaS 或商户自有叫号系统提供实时桌数、预计等待和状态告警。</p>
+          </article>
+        </div>
+      </section>
+    </main>
+
+    <script src="./app.js"></script>
+  </body>
+</html>
